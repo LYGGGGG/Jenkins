@@ -1,0 +1,31 @@
+# 集群版
+spring:
+  application:
+    name: EUREKA-HA
+
+---
+server:
+  port: 10086
+spring:
+  # 指定profile=eureka-server1
+  profiles: eureka-server1
+eureka:
+  instance:
+    # 指定当profile=eureka-server1时，主机名是eureka-server1
+    hostname: 192.168.66.103
+  client:
+    service-url:
+     # 将自己注册到eureka-server1、eureka-server2这个Eureka上面去
+      defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
+
+---
+server:
+  port: 10086
+spring:
+  profiles: eureka-server2
+eureka:
+  instance:
+    hostname: 192.168.66.104
+  client:
+    service-url:
+      defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
