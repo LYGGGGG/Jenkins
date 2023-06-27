@@ -19,4 +19,4 @@ node {
                     ${scannerHome}/bin/sonar-scanner
                 """
    }
-}
+}}
