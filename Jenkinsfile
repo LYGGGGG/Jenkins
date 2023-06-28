@@ -32,6 +32,12 @@ node {
 
    stage('编译，打包微服务，构建镜像') {
             sh "mvn -f ${project_name} clean package dockerfile:build"
+
+            //定义镜像名称
+            def imageName = "${project_name}:${tag}"
+
+            //对镜像打上标签
+            sh "docker tag ${imageName} ${harbor_url}/${harbor_project}/${imageName}"
         }
 
 }
