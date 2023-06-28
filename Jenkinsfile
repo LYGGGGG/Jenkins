@@ -4,7 +4,10 @@ def git_auth = "92261813-7f74-49a0-b60f-f6d8dbfc952c"
 def git_url = "git@192.168.66.100:itheima_group/tensquare_back.git"
 //镜像的版本号
 def tag = "latest"
-
+//Harbor的url地址
+def harbor_url = "192.168.66.102:85"
+//镜像仓库中的项目名称
+def harbor_project = "tensquare"
 
 node {
    stage('拉取代码') {
