@@ -2,6 +2,8 @@
 def git_auth = "92261813-7f74-49a0-b60f-f6d8dbfc952c"
 //git utl
 def git_url = "git@192.168.66.100:itheima_group/tensquare_back.git"
+//镜像的版本号
+def tag = "latest"
 
 
 node {
@@ -28,4 +30,5 @@ node {
    stage('编译，打包微服务，构建镜像') {
             sh "mvn -f ${project_name} clean package dockerfile:build"
         }
+
 }
