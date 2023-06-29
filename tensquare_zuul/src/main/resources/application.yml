@@ -11,8 +11,6 @@ eureka:
   client:
     service-url:  
       defaultZone: http://192.168.66.103:10086/eureka # Eureka访问地址
-    register-with-eureka: true
-    fetch-registry: true
   instance:
     prefer-ip-address: true
   
