@@ -42,7 +42,7 @@ node {
         sh "docker tag ${imageName} ${harbor_url}/${harbor_project}/${imageName}"
 
         //把项目推送到Harbor
-        withCredentials([usernamePassword(credentialsId: '${harbor_auth}', passwordVariable: 'password', usernameVariable: 'username')]) {
+        withCredentials([usernamePassword(credentialsId: "${harbor_auth}", passwordVariable: 'password', usernameVariable: 'username')]) {
             //登录Harbor
             sh "docker login -u ${username} -p ${password} ${harbor_url}"
 
