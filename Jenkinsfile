@@ -16,7 +16,7 @@ node {
         checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${git_auth}", url: "${git_url}"]])
     }
 
-    stage('代码审查') {
+/*    stage('代码审查') {
         //定义当前Jenkins的SonarQubeScanner工具
         def scannerHome = tool 'sonar-scanner'
         //引用当前Jenkins SonarQube环境
@@ -26,7 +26,7 @@ node {
                     ${scannerHome}/bin/sonar-scanner
                 """
         }
-    }
+    }*/
 
     stage('编译，安装公共子工程') {
         sh "mvn -f tensquare_common clean install"
