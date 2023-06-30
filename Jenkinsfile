@@ -69,13 +69,8 @@ node {
                 sh "echo '镜像推送成功'"
             }
         }
-
         //遍历每个服务器，分别部署
         for(int j = 0; j < selectedServers.length; j ++){
-            def projectInfo = selectedProjectNames[j];
-            def currentProjectName = "${projectInfo}".split("@")[0];
-            def currentProjectPort = "${projectInfo}".split("@")[1];
-
             // 获取当前服务器名称
             def currentServerName = selectedServers[j]
             // 加上参数格式: --spring.profiles.active=eureka-server1/eureka-server2
@@ -91,5 +86,4 @@ node {
             sshPublisher(publishers: [sshPublisherDesc(configName: "${currentServerName}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deployCluster.sh $harbor_url $harbor_project $currentProjectName $tag $currentProjectPort $activeProfile", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
     }
-
 }
