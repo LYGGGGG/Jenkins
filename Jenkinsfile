@@ -15,8 +15,10 @@ node {
     stage('拉取代码') {
         checkout scmGit(branches: [[name: "*/${branch}"]], extensions: [], userRemoteConfigs: [[credentialsId: "${git_auth}", url: "${git_url}"]])
     }
-
+    // 获取当前项目的名称（这是一个数组）
     def selectedProjectNames = "${project_name}".split(",")
+    // 获取当前选择的服务器（服务器集群）
+    def selectedServers = "${publish_server}".split(",")
 
     /*stage('代码审查') {
         for (int i = 0; i < selectedProjectNames.length; i++) {
@@ -41,11 +43,11 @@ node {
     }
 
     stage('编译，打包微服务，构建镜像，上传镜像') {
-
+        // 遍历每个微服务项目
         for (int i = 0; i < selectedProjectNames.length; i++) {
             //tensquare_eureka_server@10086
             def projectInfo = selectedProjectNames[i];
-            def currentProjectName = "${projectInfo}".split("@")[0] + "_" + i;
+            def currentProjectName = "${projectInfo}".split("@")[0];
             def currentProjectPort = "${projectInfo}".split("@")[1];
 
             sh "mvn -f ${currentProjectName} clean package dockerfile:build"
@@ -67,9 +69,23 @@ node {
                 sh "echo '镜像推送成功'"
             }
         }
-        //部署应用
-        //sshPublisher(publishers: [sshPublisherDesc(configName: 'master_server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deploy.sh $harbor_url $harbor_project $project_name $tag $port", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
 
+        //遍历每个服务器，分别部署
+        for(int j = 0; j < selectedServers.length; j ++){
+            // 获取当前服务器名称
+            def currentServerName = selectedServers[j]
+            // 加上参数格式: --spring.profiles.active=eureka-server1/eureka-server2
+            def activeProfile = "--spring.profiles.active="
+
+            //根据不同的服务器名称来读取不同的Eureka配置信息
+            if (currentServerName=="master-server"){
+                activeProfile = activeProfile + "eureka-server1"
+            }else if (currentServerName=="slave-server"){
+                activeProfile = activeProfile + "eureka-server2"
+            }
+
+            sshPublisher(publishers: [sshPublisherDesc(configName: "${currentServerName}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deployCluster.sh $harbor_url $harbor_project $currentProjectName $tag $currentProjectPort $activeProfile", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+        }
     }
 
 }
