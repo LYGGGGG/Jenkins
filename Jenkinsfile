@@ -72,6 +72,10 @@ node {
 
         //遍历每个服务器，分别部署
         for(int j = 0; j < selectedServers.length; j ++){
+            def projectInfo = selectedProjectNames[j];
+            def currentProjectName = "${projectInfo}".split("@")[0];
+            def currentProjectPort = "${projectInfo}".split("@")[1];
+
             // 获取当前服务器名称
             def currentServerName = selectedServers[j]
             // 加上参数格式: --spring.profiles.active=eureka-server1/eureka-server2
