@@ -68,22 +68,22 @@ node {
 
                 sh "echo '镜像推送成功'"
             }
-        }
-        //遍历每个服务器，分别部署
-        for(int j = 0; j < selectedServers.length; j ++){
-            // 获取当前服务器名称
-            def currentServerName = selectedServers[j]
-            // 加上参数格式: --spring.profiles.active=eureka-server1/eureka-server2
-            def activeProfile = "--spring.profiles.active="
+            //遍历每个服务器，分别部署
+            for (int j = 0; j < selectedServers.length; j++) {
+                // 获取当前服务器名称
+                def currentServerName = selectedServers[j]
+                // 加上参数格式: --spring.profiles.active=eureka-server1/eureka-server2
+                def activeProfile = "--spring.profiles.active="
 
-            //根据不同的服务器名称来读取不同的Eureka配置信息
-            if (currentServerName=="master-server"){
-                activeProfile = activeProfile + "eureka-server1"
-            }else if (currentServerName=="slave-server"){
-                activeProfile = activeProfile + "eureka-server2"
+                //根据不同的服务器名称来读取不同的Eureka配置信息
+                if (currentServerName == "master-server") {
+                    activeProfile = activeProfile + "eureka-server1"
+                } else if (currentServerName == "slave-server") {
+                    activeProfile = activeProfile + "eureka-server2"
+                }
+
+                sshPublisher(publishers: [sshPublisherDesc(configName: "${currentServerName}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deployCluster.sh $harbor_url $harbor_project $currentProjectName $tag $currentProjectPort $activeProfile", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
             }
-
-            sshPublisher(publishers: [sshPublisherDesc(configName: "${currentServerName}", transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: "/opt/jenkins_shell/deployCluster.sh $harbor_url $harbor_project $currentProjectName $tag $currentProjectPort $activeProfile", execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
         }
     }
 }
