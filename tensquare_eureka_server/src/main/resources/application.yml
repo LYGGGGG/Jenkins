@@ -7,6 +7,8 @@ spring:
 server:
   port: 10086
 spring:
+  freemarker:
+    prefer-file-system-access: false
   # 指定profile=eureka-server1
   profiles:
     active: eureka-server1
@@ -25,6 +27,8 @@ eureka:
 server:
   port: 10086
 spring:
+  freemarker:
+    prefer-file-system-access: false
   profiles:
     active: eureka-server2
 eureka:
