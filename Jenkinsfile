@@ -45,7 +45,7 @@ node {
         for (int i = 0; i < selectedProjectNames.length; i++) {
             //tensquare_eureka_server@10086
             def projectInfo = selectedProjectNames[i];
-            def currentProjectName = "${projectInfo}".split("@")[0];
+            def currentProjectName = "${projectInfo}".split("@")[0] + "_" + i;
             def currentProjectPort = "${projectInfo}".split("@")[1];
 
             sh "mvn -f ${currentProjectName} clean package dockerfile:build"
