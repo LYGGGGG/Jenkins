@@ -17,7 +17,7 @@ eureka:
   client:
     service-url:
      # 将自己注册到eureka-server1、eureka-server2这个Eureka上面去
-      defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
+      defaultZone: http://192.168.66.104:10086/eureka/
     register-with-eureka: false
     fetch-registry: false
   server:
@@ -34,7 +34,7 @@ eureka:
     hostname: 192.168.66.104
   client:
     service-url:
-      defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
+      defaultZone: http://192.168.66.103:10086/eureka/
     register-with-eureka: false
     fetch-registry: false
   server:
