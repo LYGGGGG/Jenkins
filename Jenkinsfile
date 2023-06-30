@@ -73,7 +73,7 @@ node {
                 // 获取当前服务器名称
                 def currentServerName = selectedServers[j]
                 // 加上参数格式: --spring.profiles.active=eureka-server1/eureka-server2
-                def activeProfile = "---spring.profiles.active="
+                def activeProfile = "--spring.profiles.active="
 
                 //根据不同的服务器名称来读取不同的Eureka配置信息
                 if (currentServerName == "master-server") {
