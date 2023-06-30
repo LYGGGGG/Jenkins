@@ -7,8 +7,6 @@ spring:
 server:
   port: 10086
 spring:
-  freemarker:
-    prefer-file-system-access: false
   # 指定profile=eureka-server1
   profiles:
     active: eureka-server1
@@ -22,13 +20,13 @@ eureka:
       defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
     register-with-eureka: false
     fetch-registry: false
+  server:
+    enable-self-preservation: false
 
 ---
 server:
   port: 10086
 spring:
-  freemarker:
-    prefer-file-system-access: false
   profiles:
     active: eureka-server2
 eureka:
@@ -39,3 +37,5 @@ eureka:
       defaultZone: http://192.168.66.103:10086/eureka/,http://192.168.66.104:10086/eureka/
     register-with-eureka: false
     fetch-registry: false
+  server:
+    enable-self-preservation: false
